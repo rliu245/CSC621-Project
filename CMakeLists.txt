@@ -13,3 +13,18 @@ target_link_libraries(DicomSeriesReadImageWrite2  ${ITK_LIBRARIES})
 # Create Hello World application to test for proper ITK installation
 add_executable(HelloWorld main.cpp)
 target_link_libraries(HelloWorld ${ITK_LIBRARIES})
+
+# Create WatershedSegmentation 1
+find_package(ITK REQUIRED)
+include(${ITK_USE_FILE})
+if (ITKVtkGlue_LOADED)
+  find_package(VTK REQUIRED)
+  include(${VTK_USE_FILE})
+endif()
+
+add_executable(WatershedSegmentation1 WatershedSegmentation1.cxx )
+target_link_libraries(WatershedSegmentation1 ${ITK_LIBRARIES})
+
+if(BUILD_TESTING)
+  add_subdirectory(test)
+endif()

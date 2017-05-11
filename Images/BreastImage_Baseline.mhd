@@ -1,0 +1,13 @@
+ObjectType = Image
+NDims = 3
+BinaryData = True
+BinaryDataByteOrderMSB = False
+CompressedData = False
+TransformMatrix = 1 -2.05103e-10 0 2.05103e-10 1 0 0 0 1
+Offset = -161.319 -142.747 -72.612
+CenterOfRotation = 0 0 0
+AnatomicalOrientation = RAI
+ElementSpacing = 1.0625 1.0625 1.4
+DimSize = 320 320 128
+ElementType = MET_SHORT
+ElementDataFile = BreastImage_Baseline.raw

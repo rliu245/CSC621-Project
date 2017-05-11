@@ -21,3 +21,17 @@ target_link_libraries(BSpline-Registration ${ITK_LIBRARIES})
 # Create Demon's Registration Algorithm
 add_executable(Demons-Registration Demons-Registration.cxx)
 target_link_libraries(Demons-Registration ${ITK_LIBRARIES})
+
+# Create WatershedSegmentation 1
+if (ITKVtkGlue_LOADED)
+  find_package(VTK REQUIRED)
+  include(${VTK_USE_FILE})
+endif()
+
+add_executable(WatershedSegmentation1 WatershedSegmentation1.cxx )
+target_link_libraries(WatershedSegmentation1 ${ITK_LIBRARIES})
+
+if(BUILD_TESTING)
+  add_subdirectory(test)
+endif()
+

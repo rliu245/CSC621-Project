@@ -36,7 +36,7 @@ int main( int argc, char *argv[] ) {
     std::cin >> repeat;
     std::cout << std::endl;
 
-    String outputImage, lowerThreshold, outputScaleLevel;
+    string outputImage, lowerThreshold, outputScaleLevel;
 
     // Perform Watershed Segmentation
     for(int i = 0; i < repeat; i++) {

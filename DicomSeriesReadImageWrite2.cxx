@@ -40,22 +40,14 @@
 //  \index{itk::ImageFileWriter!header}
 //
 //  Software Guide : EndLatex
-// Software Guide : BeginCodeSnippet
-#include "itkImage.h"
-#include "itkGDCMImageIO.h"
-#include "itkGDCMSeriesFileNames.h"
-#include "itkImageSeriesReader.h"
-#include "itkImageFileWriter.h"
-// Software Guide : EndCodeSnippet
-int main( int argc, char* argv[] )
+
+#include "test.h"
+
+/* Function expects 2 arguments...
+ * " DicomDirectory  outputFileName  [seriesName]"
+ */
+void DicomSeriesReadImageWrite2( char* dicom_directory, char* outputfilename )
 {
-  if( argc < 3 )
-    {
-    std::cerr << "Usage: " << std::endl;
-    std::cerr << argv[0] << " DicomDirectory  outputFileName  [seriesName]"
-              << std::endl;
-    return EXIT_FAILURE;
-    }
 // Software Guide : BeginLatex
 //
 // We define the pixel type and dimension of the image to be read. In this
@@ -138,12 +130,12 @@ int main( int argc, char* argv[] )
   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
   nameGenerator->SetUseSeriesDetails( true );
   nameGenerator->AddSeriesRestriction("0008|0021" );
-  nameGenerator->SetDirectory( argv[1] );
+  nameGenerator->SetDirectory( dicom_directory );
 // Software Guide : EndCodeSnippet
   try
     {
     std::cout << std::endl << "The directory: " << std::endl;
-    std::cout << std::endl << argv[1] << std::endl << std::endl;
+    std::cout << std::endl << dicom_directory << std::endl << std::endl;
     std::cout << "Contains the following DICOM Series: ";
     std::cout << std::endl << std::endl;
 // Software Guide : BeginLatex
@@ -179,14 +171,10 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
     std::string seriesIdentifier;
-    if( argc > 3 ) // If no optional series identifier
-      {
-      seriesIdentifier = argv[3];
-      }
-    else
-      {
-      seriesIdentifier = seriesUID.begin()->c_str();
-      }
+    
+    /* Attempt to find the series names */
+    seriesIdentifier = seriesUID.begin()->c_str();
+
 // Software Guide : EndCodeSnippet
     std::cout << std::endl << std::endl;
     std::cout << "Now reading series: " << std::endl << std::endl;
@@ -233,7 +221,6 @@ int main( int argc, char* argv[] )
     catch (itk::ExceptionObject &ex)
       {
       std::cout << ex << std::endl;
-      return EXIT_FAILURE;
       }
 // Software Guide : EndCodeSnippet
 // Software Guide : BeginLatex
@@ -253,11 +240,11 @@ int main( int argc, char* argv[] )
 // Software Guide : BeginCodeSnippet
     typedef itk::ImageFileWriter< ImageType > WriterType;
     WriterType::Pointer writer = WriterType::New();
-    writer->SetFileName( argv[2] );
+    writer->SetFileName( outputfilename );
     writer->SetInput( reader->GetOutput() );
 // Software Guide : EndCodeSnippet
     std::cout  << "Writing the image as " << std::endl << std::endl;
-    std::cout  << argv[2] << std::endl << std::endl;
+    std::cout  << outputfilename << std::endl << std::endl;
 // Software Guide : BeginLatex
 //
 // The process of writing the image is initiated by invoking the
@@ -273,13 +260,11 @@ int main( int argc, char* argv[] )
     catch (itk::ExceptionObject &ex)
       {
       std::cout << ex << std::endl;
-      return EXIT_FAILURE;
       }
     }
   catch (itk::ExceptionObject &ex)
     {
     std::cout << ex << std::endl;
-    return EXIT_FAILURE;
     }
   // Software Guide : BeginLatex
   //
@@ -290,5 +275,4 @@ int main( int argc, char* argv[] )
   // you could have loaded from any other file format.
   //
   // Software Guide : EndLatex
-  return EXIT_SUCCESS;
 }

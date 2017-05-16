@@ -111,10 +111,6 @@ void WatershedSegmentation2( char* input_image, char* output_image, char* lower_
     {
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;
-    return EXIT_FAILURE;
     }
-
-
-  return EXIT_SUCCESS;
 
 }

@@ -7,8 +7,8 @@ find_package(ITK REQUIRED)
 include(${ITK_USE_FILE})
 
 # Create the DicomSeries to mha(meta image files)
-add_executable(Main1 main1.cpp DicomSeriesReadImageWrite2.cxx ImageReadImageSeriesWrite.cxx)
-target_link_libraries(Main1 ${ITK_LIBRARIES})
+add_executable(Final Final.cpp DicomSeriesReadImageWrite2.cxx ImageReadImageSeriesWrite.cxx)
+target_link_libraries(Final ${ITK_LIBRARIES})
 
 # Create Hello World application to test for proper ITK installation
 add_executable(HelloWorld main.cpp)
@@ -19,9 +19,6 @@ if (ITKVtkGlue_LOADED)
   find_package(VTK REQUIRED)
   include(${VTK_USE_FILE})
 endif()
-
-add_executable(WatershedSegmentation1 WatershedSegmentation1.cxx )
-target_link_libraries(WatershedSegmentation1 ${ITK_LIBRARIES})
 
 add_executable(WatershedSegmentation2 WatershedSegmentation2.cxx )
 target_link_libraries(WatershedSegmentation2 ${ITK_LIBRARIES})

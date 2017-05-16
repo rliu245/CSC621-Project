@@ -1,4 +1,4 @@
-#include "test.h"
+#include "ImageProcessing.h"
 #include <string.h>
 
 int main( int argc, char *argv[] ) {

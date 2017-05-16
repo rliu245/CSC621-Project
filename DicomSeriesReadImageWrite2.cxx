@@ -41,7 +41,7 @@
 //
 //  Software Guide : EndLatex
 
-#include "test.h"
+#include "ImageProcessing.h"
 
 /* Function expects 2 arguments...
  * " DicomDirectory  outputFileName  [seriesName]"

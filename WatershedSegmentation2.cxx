@@ -24,7 +24,7 @@
 //
 // Software Guide : EndLatex
 
-#include Final.h
+#include "ImageProcessing.h"
 
 void WatershedSegmentation2( char* input_image, char* output_image, char* lower_threshold, char* output_scalelevel )
 {

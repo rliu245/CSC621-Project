@@ -27,7 +27,7 @@
 //
 //  Software Guide : EndLatex
 
-#include "test.h"
+#include "ImageProcessing.h"
 
 /* Function expects 3 arguments...
  * " inputFile outputPrefix outputExtension"

@@ -1,5 +1,5 @@
 #include "ImageProcessing.h"
-#include <string.h>
+#include <string>
 
 int main( int argc, char *argv[] ) {
   int choice = 0;
@@ -36,13 +36,13 @@ int main( int argc, char *argv[] ) {
     std::cin >> repeat;
     std::cout << std::endl;
 
-    string outputImage, lowerThreshold, outputScaleLevel;
+    std::string outputImage, lowerThreshold, outputScaleLevel;
 
     // Perform Watershed Segmentation
     for(int i = 0; i < repeat; i++) {
       std::cout << "Expecting 3 parameters: outputImage lowerThreshold outputScaleLevel" << std::endl;
       std::cin >> outputImage >> lowerThreshold >> outputScaleLevel;
-      WatershedSegmentation2(dimage, outputImage, lowerThreshold, outputScaleLevel);
+      WatershedSegmentation2(dimage, outputImage.c_str(), lowerThreshold.c_str(), outputScaleLevel.c_str());
     }
     /*
     std::cout << "\nPerforming Registration now." << std::endl << std::endl;

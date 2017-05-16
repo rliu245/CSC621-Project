@@ -7,8 +7,8 @@ find_package(ITK REQUIRED)
 include(${ITK_USE_FILE})
 
 # Create the DicomSeries to mha(meta image files)
-add_executable(Final Final.cpp DicomSeriesReadImageWrite2.cxx ImageReadImageSeriesWrite.cxx)
-target_link_libraries(Final ${ITK_LIBRARIES})
+add_executable(ImageProcessing ImageProcessing.cpp DicomSeriesReadImageWrite2.cxx ImageReadImageSeriesWrite.cxx)
+target_link_libraries(ImageProcessing ${ITK_LIBRARIES})
 
 # Create Hello World application to test for proper ITK installation
 add_executable(HelloWorld main.cpp)

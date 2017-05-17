@@ -20,8 +20,8 @@
 #include "itkUnaryFunctorImageFilter.h"
 #include "itkGradientMagnitudeRecursiveGaussianImageFilter.h"
 
-void DicomSeriesReadImageWrite2( char * dicom_directory, char * outputfilename );
-void ImageReadImageSeriesWrite( char * input_file, char * output_prefix, char * output_extension );
-void WatershedSegmentation2( char* input_image, char* output_image, char* lower_threshold, char* output_scalelevel );
+void DicomSeriesReadImageWrite2(const char * dicom_directory, char * outputfilename );
+void ImageReadImageSeriesWrite( char * input_file, const char * output_prefix, const char * output_extension );
+void WatershedSegmentation2(char* input_image, char* output_image, char* lower_threshold, char* output_scalelevel );
 
 #endif  

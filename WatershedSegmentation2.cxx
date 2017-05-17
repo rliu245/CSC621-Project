@@ -24,6 +24,12 @@
 //
 // Software Guide : EndLatex
 
+#include "itkWatershedImageFilter.h"
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+#include "itkScalarToRGBPixelFunctor.h"
+#include "itkUnaryFunctorImageFilter.h"
+#include "itkGradientMagnitudeRecursiveGaussianImageFilter.h"
 #include "ImageProcessing.h"
 
 void WatershedSegmentation2(char* input_image, char* output_image, char* lower_threshold, char* output_scalelevel )

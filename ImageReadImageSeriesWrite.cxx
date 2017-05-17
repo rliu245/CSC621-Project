@@ -27,6 +27,10 @@
 //
 //  Software Guide : EndLatex
 
+#include "itkImage.h"
+#include "itkImageFileReader.h"
+#include "itkImageSeriesWriter.h"
+#include "itkNumericSeriesFileNames.h"
 #include "ImageProcessing.h"
 
 /* Function expects 3 arguments...

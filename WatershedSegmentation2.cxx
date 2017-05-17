@@ -24,26 +24,10 @@
 //
 // Software Guide : EndLatex
 
-#include "itkWatershedImageFilter.h"
-#include "itkImageFileReader.h"
-#include "itkImageFileWriter.h"
-#include "itkScalarToRGBPixelFunctor.h"
-#include "itkUnaryFunctorImageFilter.h"
-#include "itkGradientMagnitudeRecursiveGaussianImageFilter.h"
+#include "ImageProcessing.h"
 
-
-int main( int argc, char *argv[] )
+void WatershedSegmentation2(char* input_image, char* output_image, char* lower_threshold, char* output_scalelevel )
 {
-
-
-  if( argc < 5 )
-    {
-    std::cerr << "Missing Parameters " << std::endl;
-    std::cerr << "Usage: " << argv[0];
-    std::cerr << " inputImage  outputImage lowerThreshold  outputScaleLevel" << std::endl;
-    return EXIT_FAILURE;
-    }
-
   typedef float                             InternalPixelType;
   typedef itk::RGBPixel<unsigned char>      RGBPixelType;
 
@@ -62,8 +46,8 @@ int main( int argc, char *argv[] )
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
 
-  reader->SetFileName( argv[1] );
-  writer->SetFileName( argv[2] );
+  reader->SetFileName( input_image );
+  writer->SetFileName( output_image );
 
 
   //
@@ -92,8 +76,8 @@ int main( int argc, char *argv[] )
 
   watershedFilter->SetInput( gradienMagnitudeFilter->GetOutput() );
 
-  watershedFilter->SetThreshold( atof( argv[3] ) );
-  watershedFilter->SetLevel(     atof( argv[4] ) );
+  watershedFilter->SetThreshold( atof( lower_threshold ) );
+  watershedFilter->SetLevel(     atof( output_scalelevel ) );
 
 
   //
@@ -127,10 +111,6 @@ int main( int argc, char *argv[] )
     {
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;
-    return EXIT_FAILURE;
     }
-
-
-  return EXIT_SUCCESS;
 
 }

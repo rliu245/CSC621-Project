@@ -33,7 +33,7 @@
  * " inputFile outputPrefix outputExtension"
  */
 
-void ImageReadImageSeriesWrite( char* input_file, char* output_prefix, char* output_extension )
+void ImageReadImageSeriesWrite( char* input_file, const char* output_prefix, const char* output_extension )
 {
   //  Software Guide : BeginLatex
   //

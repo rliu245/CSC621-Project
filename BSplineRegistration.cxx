@@ -18,10 +18,9 @@
 
 // Software Guide : BeginLatex
 //
-// This example is almost identical to
-// Section~\ref{sec:DeformableRegistration12}, with the difference that it
-// illustrates who to use the RegularStepGradientDescentOptimizer for a
-// deformable registration task.
+// This example illustrates the use of the \doxygen{RegularStepGradientDescentOptimizer}
+// in the context of a deformable registration problem. The code of this example is almost
+// identical to the one in Section~\ref{sec:DeformableRegistration8}.
 //
 // \index{itk::BSplineTransform}
 // \index{itk::BSplineTransform!DeformableRegistration}
@@ -57,14 +56,14 @@
 #include "itkCastImageFilter.h"
 #include "itkSquaredDifferenceImageFilter.h"
 
-#include "itkMersenneTwisterRandomVariateGenerator.h"
+#include "itkTransformFileReader.h"
 
+#include "ImageProcessing.h"
 
 //  The following section of code implements a Command observer
 //  used to monitor the evolution of the registration process.
 //
 #include "itkCommand.h"
-#include "ImageProcessing.h"
 class CommandIterationUpdate : public itk::Command
 {
 public:
@@ -87,47 +86,22 @@ public:
 
   void Execute(const itk::Object * object, const itk::EventObject & event) ITK_OVERRIDE
     {
-    OptimizerPointer optimizer =
-      static_cast< OptimizerPointer >( object );
-    if( !(itk::IterationEvent().CheckEvent( &event )) )
-      {
-      return;
-      }
-    std::cout << "Iteration : ";
+    OptimizerPointer optimizer = static_cast< OptimizerPointer >( object );
     std::cout << optimizer->GetCurrentIteration() << "   ";
     std::cout << optimizer->GetValue() << "   ";
     std::cout << std::endl;
     }
 };
 
-
-void BSplineRegistration(const char* fixedImageFile, const char* movingImageFile, const char* outputImageFile)
+void BSplineRegistration( const char* fixedImageFile, const char* movingImageFile, const char* outputImageFile )
 {
-  // For consistent results when regression testing.
-  itk::Statistics::MersenneTwisterRandomVariateGenerator
-    ::GetInstance()->SetSeed( 121212 );
 
-  const    unsigned int    ImageDimension = 2;
-  typedef  unsigned char   PixelType;
+  const    unsigned int    ImageDimension = 3;
+  typedef  signed short    PixelType;
 
   typedef itk::Image< PixelType, ImageDimension >  FixedImageType;
   typedef itk::Image< PixelType, ImageDimension >  MovingImageType;
 
-
-  //  Software Guide : BeginLatex
-  //
-  //  We instantiate now the type of the \code{BSplineTransform}
-  //  using as template parameters the type for coordinates representation, the
-  //  dimension of the space, and the order of the BSpline. We also intantiate
-  //  the type of the optimizer.
-  //
-  //  \index{BSplineTransform!New}
-  //  \index{BSplineTransform!Instantiation}
-  //  \index{RegularStepGradientDescentOptimizer!Instantiation}
-  //
-  //  Software Guide : EndLatex
-
-  // Software Guide : BeginCodeSnippet
   const unsigned int SpaceDimension = ImageDimension;
   const unsigned int SplineOrder = 3;
   typedef double CoordinateRepType;
@@ -138,8 +112,6 @@ void BSplineRegistration(const char* fixedImageFile, const char* movingImageFile
                             SplineOrder >     TransformType;
 
   typedef itk::RegularStepGradientDescentOptimizer       OptimizerType;
-  // Software Guide : EndCodeSnippet
-
 
   typedef itk::MattesMutualInformationImageToImageMetric<
                                     FixedImageType,
@@ -158,11 +130,9 @@ void BSplineRegistration(const char* fixedImageFile, const char* movingImageFile
   InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
   RegistrationType::Pointer   registration  = RegistrationType::New();
 
-
   registration->SetMetric(        metric        );
   registration->SetOptimizer(     optimizer     );
   registration->SetInterpolator(  interpolator  );
-
 
   TransformType::Pointer  transform = TransformType::New();
   registration->SetTransform( transform );
@@ -187,7 +157,7 @@ void BSplineRegistration(const char* fixedImageFile, const char* movingImageFile
 
   registration->SetFixedImageRegion( fixedRegion );
 
-  unsigned int numberOfGridNodesInOneDimension = 7;
+  unsigned int numberOfGridNodesInOneDimension = 5;
 
   // Software Guide : BeginCodeSnippet
 
@@ -224,19 +194,25 @@ void BSplineRegistration(const char* fixedImageFile, const char* movingImageFile
   registration->SetInitialTransformParameters( transform->GetParameters() );
   // Software Guide : EndCodeSnippet
 
+  parameters.Fill( 0.0 );
+
+  transform->SetParameters( parameters );
+
+  registration->SetInitialTransformParameters( transform->GetParameters() );
+  // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
   //
-  //  Next we set the parameters of the RegularStepGradientDescentOptimizer.
+  //  Next we set the parameters of the RegularStepGradientDescentOptimizer object.
   //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  optimizer->SetMaximumStepLength( 10.0   );
+  optimizer->SetMaximumStepLength( 10.0 );
   optimizer->SetMinimumStepLength(  0.01 );
 
   optimizer->SetRelaxationFactor( 0.7 );
-  optimizer->SetNumberOfIterations( 200 );
+  optimizer->SetNumberOfIterations( 50 );
   // Software Guide : EndCodeSnippet
 
   // Create the Command observer and register it with the optimizer.
@@ -247,11 +223,12 @@ void BSplineRegistration(const char* fixedImageFile, const char* movingImageFile
   metric->SetNumberOfHistogramBins( 50 );
 
   const unsigned int numberOfSamples =
-    static_cast<unsigned int>( fixedRegion.GetNumberOfPixels() * 60.0 / 100.0 );
+    static_cast<unsigned int>( fixedRegion.GetNumberOfPixels() * 20.0 / 100.0 );
 
   metric->SetNumberOfSpatialSamples( numberOfSamples );
+  metric->ReinitializeSeed( 76926294 );
 
-  // Add a time probe
+  // Add time and memory probes
   itk::TimeProbesCollectorBase chronometer;
   itk::MemoryProbesCollectorBase memorymeter;
 
@@ -275,19 +252,16 @@ void BSplineRegistration(const char* fixedImageFile, const char* movingImageFile
     {
     std::cerr << "ExceptionObject caught !" << std::endl;
     std::cerr << err << std::endl;
-    return EXIT_FAILURE;
     }
 
   OptimizerType::ParametersType finalParameters =
                     registration->GetLastTransformParameters();
-
 
   // Report the time and memory taken by the registration
   chronometer.Report( std::cout );
   memorymeter.Report( std::cout );
 
   transform->SetParameters( finalParameters );
-
 
   typedef itk::ResampleImageFilter<
                             MovingImageType,
@@ -309,7 +283,7 @@ void BSplineRegistration(const char* fixedImageFile, const char* movingImageFile
   // such as 100 or 128.
   resample->SetDefaultPixelValue( 0 );
 
-  typedef  unsigned char  OutputPixelType;
+  typedef  signed short  OutputPixelType;
 
   typedef itk::Image< OutputPixelType, ImageDimension > OutputImageType;
 
@@ -319,17 +293,13 @@ void BSplineRegistration(const char* fixedImageFile, const char* movingImageFile
 
   typedef itk::ImageFileWriter< OutputImageType >  WriterType;
 
-
   WriterType::Pointer      writer =  WriterType::New();
   CastFilterType::Pointer  caster =  CastFilterType::New();
 
-
   writer->SetFileName( outputImageFile );
-
 
   caster->SetInput( resample->GetOutput() );
   writer->SetInput( caster->GetOutput()   );
-
 
   try
     {
@@ -339,7 +309,6 @@ void BSplineRegistration(const char* fixedImageFile, const char* movingImageFile
     {
     std::cerr << "ExceptionObject caught !" << std::endl;
     std::cerr << err << std::endl;
-    return EXIT_FAILURE;
     }
 
   typedef itk::SquaredDifferenceImageFilter<

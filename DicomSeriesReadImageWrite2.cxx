@@ -51,7 +51,7 @@
 /* Function expects 2 arguments...
  * " DicomDirectory  outputFileName  [seriesName]"
  */
-void DicomSeriesReadImageWrite2(const char* dicom_directory, char* outputfilename )
+void DicomSeriesReadImageWrite2(const char* dicom_directory, const char* outputfilename )
 {
 // Software Guide : BeginLatex
 //

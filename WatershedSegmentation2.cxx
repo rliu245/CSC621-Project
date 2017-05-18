@@ -24,9 +24,15 @@
 //
 // Software Guide : EndLatex
 
+#include "itkWatershedImageFilter.h"
+#include "itkImageFileReader.h"
+#include "itkImageFileWriter.h"
+#include "itkScalarToRGBPixelFunctor.h"
+#include "itkUnaryFunctorImageFilter.h"
+#include "itkGradientMagnitudeRecursiveGaussianImageFilter.h"
 #include "ImageProcessing.h"
 
-void WatershedSegmentation2(char* input_image, char* output_image, char* lower_threshold, char* output_scalelevel )
+void WatershedSegmentation2(const char* input_image, const char* output_image, const char* lower_threshold, const char* output_scalelevel )
 {
   typedef float                             InternalPixelType;
   typedef itk::RGBPixel<unsigned char>      RGBPixelType;

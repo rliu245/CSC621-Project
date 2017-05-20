@@ -6,6 +6,6 @@ Project(CSC621-Project)
 find_package(ITK REQUIRED)
 include(${ITK_USE_FILE})
 
-# Create the DicomSeries to mha(meta image files)
+# Create the Image Processing application
 add_executable(ImageProcessing ImageProcessing.cpp DicomSeriesReadImageWrite2.cxx ImageReadImageSeriesWrite.cxx WatershedSegmentation2.cxx BSplineRegistration.cxx)
 target_link_libraries(ImageProcessing ${ITK_LIBRARIES})

@@ -2,6 +2,12 @@
 #include <iostream>
 #include <string>
 
+/*
+ * In this program, Image processing is done on two DICOM series. One of the two images are baseline and the other  After image processing, a DICOM series is converted into a 3D image(MHD file format is best) and a PNG series.
+ * Upon completion of Image Processing, Registration and Segmentation is performed.
+ *
+ */
+
 int main( int argc, char *argv[] ) {
   int choice = 0;
 

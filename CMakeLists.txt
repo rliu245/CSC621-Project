@@ -6,10 +6,6 @@ Project(CSC621-Project)
 find_package(ITK REQUIRED)
 include(${ITK_USE_FILE})
 
-# Create the DicomSeries to mha(meta image files)
-add_executable(DicomSeriesReadImageWrite2 DicomSeriesReadImageWrite2.cxx)
-target_link_libraries(DicomSeriesReadImageWrite2  ${ITK_LIBRARIES})
-
-# Create Hello World application to test for proper ITK installation
-add_executable(HelloWorld main.cpp)
-target_link_libraries(HelloWorld ${ITK_LIBRARIES})
+# Create the Image Processing application
+add_executable(ImageProcessing ImageProcessing.cpp DicomSeriesReadImageWrite2.cxx ImageReadImageSeriesWrite.cxx WatershedSegmentation2.cxx BSplineRegistration.cxx)
+target_link_libraries(ImageProcessing ${ITK_LIBRARIES})
